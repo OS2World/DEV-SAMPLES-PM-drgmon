@@ -1,0 +1,136 @@
+DLGINCLUDE 1 "G:\SOURCE\c32\drgdrop\drgdrop.h"
+
+DLGTEMPLATE IDD_RMF LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "", IDD_RMF, 0, 0, 236, 197, NOT FS_DLGBORDER, FCF_NOBYTEALIGN
+    BEGIN
+        CTEXT           "Rendering Mechanism", -1, 11, 186, 101, 8
+        LISTBOX         LB_MECHANISM, 12, 124, 101, 61, LS_MULTIPLESEL |
+                        LS_NOADJUSTPOS | LS_HORZSCROLL | WS_GROUP
+        CTEXT           "Format", -1, 119, 186, 102, 8
+        LISTBOX         LB_FORMAT, 119, 124, 102, 61, LS_MULTIPLESEL |
+                        LS_NOADJUSTPOS | LS_HORZSCROLL | WS_GROUP
+        CTEXT           "Additional Mechanisms", -1, 11, 112, 102, 8
+        ENTRYFIELD      "", EF_ADDL_MECHANISM, 13, 102, 99, 8, ES_MARGIN |
+                        ES_AUTOTAB
+        CTEXT           "Additional Formats", -1, 121, 112, 102, 8
+        ENTRYFIELD      "", EF_ADDL_FORMAT, 122, 102, 99, 8, ES_MARGIN |
+                        ES_AUTOTAB
+        PUSHBUTTON      "~Generate", PB_GENERATE, 11, 68, 52, 14,
+                        BS_NOPOINTERFOCUS | WS_GROUP
+        CTEXT           "Generated RMF", -1, 67, 89, 154, 8
+        MLE             "", MLE_GENERATED_RMF, 66, 59, 157, 30, MLS_READONLY |
+                        MLS_WORDWRAP | MLS_VSCROLL | WS_GROUP | NOT
+                        WS_TABSTOP
+        AUTOCHECKBOX    "Use ~Manually entered RMF (below)", CHK_MANUAL_RMF,
+                        12, 45, 211, 10
+        MLE             "", MLE_MANUAL_RMF, 12, 20, 212, 24, MLS_WORDWRAP |
+                        MLS_VSCROLL | MLS_IGNORETAB | WS_GROUP
+        PUSHBUTTON      "~Undo", PB_UNDO, 58, 3, 40, 14, BS_NOPOINTERFOCUS |
+                        WS_GROUP
+        PUSHBUTTON      "~Default", PB_DEFAULT, 129, 3, 40, 14,
+                        BS_NOPOINTERFOCUS
+    END
+END
+
+DLGTEMPLATE IDD_REPLY LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Dialog Title", IDD_REPLY, 0, 0, 236, 193, NOT FS_DLGBORDER,
+            FCF_NOBYTEALIGN
+    BEGIN
+        GROUPBOX        "DRAGOVER reply", 501, 3, 108, 230, 83
+        AUTOCHECKBOX    "~Override program values", CHK_OVERRIDE_DRAGOVER,
+                        17, 165, 125, 10, WS_GROUP
+        CTEXT           "Drop Action", ST_DROP_ACTION, 16, 148, 95, 8
+        CONTROL         "", CB_DROP_ACTION, 15, 96, 97, 52, WC_COMBOBOX,
+                        CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP |
+                        WS_VISIBLE
+        CTEXT           "Default Operation", ST_DEFAULT_OP, 123, 148, 95, 8
+        CONTROL         "", CB_DEFAULT_OP, 123, 71, 97, 77, WC_COMBOBOX,
+                        CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP |
+                        WS_VISIBLE
+        LTEXT           "DM_PRINTOBJECT reply", 506, 4, 80, 121, 8
+        CONTROL         "", CB_PRINTER_REPLY, 126, 54, 102, 35, WC_COMBOBOX,
+                        CBS_DROPDOWN | WS_GROUP | WS_TABSTOP | WS_VISIBLE
+        LTEXT           "DM_DISCARDOBJECT reply", 508, 4, 44, 122, 8
+        CONTROL         "", CB_SHREDDER_REPLY, 126, 18, 102, 35, WC_COMBOBOX,
+                        CBS_DROPDOWN | WS_GROUP | WS_TABSTOP | WS_VISIBLE
+        PUSHBUTTON      "~Undo", PB_UNDO, 53, 6, 53, 14, BS_NOPOINTERFOCUS |
+                        WS_GROUP
+        PUSHBUTTON      "~Default", PB_DEFAULT, 131, 6, 53, 14,
+                        BS_NOPOINTERFOCUS
+    END
+END
+
+DLGTEMPLATE IDD_DRAGINFO LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "", IDD_DRAGINFO, 0, 0, 236, 198, NOT FS_DLGBORDER,
+            FCF_NOBYTEALIGN
+    BEGIN
+        GROUPBOX        "DRAGINFO", -1, 2, 167, 229, 29
+        LTEXT           "usOperation", ID_DRAGCNR, 15, 174, 61, 8
+        CONTROL         "", CB_OPERATION, 79, 135, 107, 48, WC_COMBOBOX,
+                        CBS_DROPDOWN | WS_GROUP | WS_TABSTOP | WS_VISIBLE
+        GROUPBOX        "DRAGITEM's", 8, 1, 22, 229, 142
+        AUTOCHECKBOX    "Override program's ~Item ID", CHK_OVERRIDE_ID, 7,
+                        143, 132, 10, WS_GROUP
+        LTEXT           "ItemID:", ST_ITEMID, 153, 144, 32, 8
+        ENTRYFIELD      "", EF_ITEMID, 189, 144, 36, 8, ES_MARGIN | WS_GROUP
+        CTEXT           "hstrType", IDD_DRAGINFO, 7, 129, 88, 8
+        CONTROL         "", CB_TYPE, 6, 29, 90, 99, WC_COMBOBOX,
+                        CBS_DROPDOWN | WS_GROUP | WS_TABSTOP |
+                        WS_VISIBLE
+        CTEXT           "fsControl", IDD_RMF, 4, 105, 94, 8
+        LISTBOX         LB_CONTROL, 6, 72, 90, 33, LS_MULTIPLESEL |
+                        LS_NOADJUSTPOS | LS_HORZSCROLL | WS_GROUP
+        CTEXT           "fsSupportedOps", IDD_REPLY, 7, 60, 88, 8
+        LISTBOX         LB_SUPPORTEDOPS, 7, 27, 88, 32, LS_MULTIPLESEL |
+                        LS_NOADJUSTPOS | LS_HORZSCROLL | WS_GROUP
+        GROUPBOX        "Source/Target hstr's", 25, 100, 30, 128, 109
+        AUTOCHECKBOX    "Override program ~values", CHK_OVERRIDE_HSTRS, 103,
+                        116, 121, 10, WS_GROUP
+        CTEXT           "hstrContainerName", ST_CNR_NAME, 103, 101, 118, 8
+        ENTRYFIELD      "", EF_CNR_NAME, 108, 91, 114, 8, ES_MARGIN |
+                        WS_GROUP
+        CTEXT           "hstrSourceName", ST_SOURCE_NAME, 106, 76, 118, 8
+        ENTRYFIELD      "", EF_SOURCE_NAME, 108, 66, 114, 8, ES_MARGIN |
+                        WS_GROUP
+        CTEXT           "hstrTargetName", ST_TARGET_NAME, 103, 46, 118, 8
+        ENTRYFIELD      "", EF_TARGET_NAME, 108, 36, 114, 8, ES_MARGIN |
+                        WS_GROUP
+        PUSHBUTTON      "~Undo", PB_UNDO, 45, 4, 53, 14, BS_NOPOINTERFOCUS |
+                        WS_GROUP
+        PUSHBUTTON      "~Default", PB_DEFAULT, 129, 4, 48, 14,
+                        BS_NOPOINTERFOCUS
+    END
+END
+
+DLGTEMPLATE IDD_MISC LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "", IDD_MISC, 0, 0, 253, 196, NOT FS_DLGBORDER, FCF_NOBYTEALIGN
+    BEGIN
+        GROUPBOX        "DragOver options", -1, 5, 153, 243, 40
+        AUTORADIOBUTTON "Allow ~ALL drops", RB_ALL_DROPS, 19, 169, 222, 10,
+                        WS_GROUP | WS_TABSTOP
+        AUTORADIOBUTTON "Allow ~only DRM_OS2FILE drops", RB_ONLY_OS2FILE, 19,
+                        159, 222, 10
+        GROUPBOX        "Debug Window options", 8, 5, 31, 243, 118
+        GROUPBOX        "Verbose", 9, 22, 101, 218, 37
+        AUTORADIOBUTTON "~Display only message names", RB_ONLY_MSGNAMES, 38,
+                        117, 196, 10, WS_GROUP | WS_TABSTOP
+        AUTORADIOBUTTON "~Expand all structures", RB_EXPAND_STRUCTURES, 38,
+                        107, 196, 10
+        GROUPBOX        "On a MultiItem drag....", ID_DRAGCNR, 22, 61, 218,
+                        37
+        AUTORADIOBUTTON "Display All ~Items", RB_ALL_ITEMS, 38, 75, 195, 10,
+                        WS_GROUP | WS_TABSTOP
+        AUTORADIOBUTTON "Display only ~First item", RB_FIRST_ITEM_ONLY, 38,
+                        65, 195, 10
+        PUSHBUTTON      "~Undo", PB_UNDO, 55, 7, 56, 14, BS_NOPOINTERFOCUS |
+                        WS_GROUP
+        PUSHBUTTON      "~Default", PB_DEFAULT, 135, 7, 52, 14,
+                        BS_NOPOINTERFOCUS
+        AUTOCHECKBOX    "~Keep last item at bottom of window",
+                        CHK_SCROLL_TO_BOTTOM, 23, 41, 179, 10
+    END
+END

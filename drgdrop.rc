@@ -1,0 +1,36 @@
+#include <os2.h>
+#include "drgdrop.h"
+
+ICON ID_RESOURCES DRGDROP_ICON_FILENAME
+
+MENU ID_CONTEXT_MENU
+{
+    MENUITEM "~DragInfo Settings",       IDM_DRAGINFO_SETTINGS
+    MENUITEM "~RMF Settings",            IDM_RMF_SETTINGS
+    MENUITEM "R~eply Settings",          IDM_REPLY_SETTINGS
+    MENUITEM "~Miscellaneous Settings",  IDM_MISC_SETTINGS
+    MENUITEM SEPARATOR
+    MENUITEM "~Surface Listbox",         IDM_SURFACE_LISTBOX
+}
+
+MENU ID_DEBUGWIN_RESOURCES
+{
+    SUBMENU "~Options", -1
+    {
+        MENUITEM "~Save...",             IDM_DEBUGWIN_SAVE
+        MENUITEM "~Print",               IDM_DEBUGWIN_PRINT
+        MENUITEM "~Clear",               IDM_DEBUGWIN_CLEAR
+    }
+}
+
+ACCELTABLE ID_RESOURCES
+{
+    VK_F3, IDM_EXIT, VIRTUALKEY
+}
+
+ACCELTABLE ID_NBFRAME
+{
+    VK_F3, IDM_EXIT, VIRTUALKEY
+}
+
+rcinclude drgdrop.dlg

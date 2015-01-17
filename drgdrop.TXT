@@ -1,0 +1,268 @@
+DRGDROP.EXE is a sample program for OS/2 Drag/Drop facilities (aka Direct
+Manipulation). It is useful as a Drag/Drop monitoring program to dynamically
+see what is taking place during a direct manipulation operation.
+
+DRGDROP starts out by creating 2 container windows, each being a container
+control which is a child of a frame window. One of the containers has some
+icons in it. Each icon represents a temporary file that is created at the
+beginning of the program and used to drag to other windows during program
+operation. The other container is empty. Once you drag some icons to the
+empty container it functions just like the container with the icons. Both
+containers start out at the bottom of the screen, each being half the width of
+the screen and 1/3 the height of the screen.
+
+Since the icons in the first container represent actual files, these icons can
+be dragged and dropped on either the other DRGDROP container or other windows
+that support Drag/Drop.
+
+In order to see what is going on during the Drag/Drop operation, 2 additional
+windows are created. I call these 'debug' windows. They are listboxes that are
+children of frame windows. All Drag/Drop activity is displayed in these windows.
+The windows are displayed on the top of the screen - one on the left and one on
+the right. They are tied to the container windows that are below them, i.e.
+any Drag/Drop activity that happens for the container below them gets output in
+their listbox. So the screen looks like this:
+
+
+                 ÚÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄ¿
+                 ³ Container 1³               ³ Container 2³
+                 ³   Debug    ³               ³   Debug    ³
+                 ³  Window    ³               ³  Window    ³
+                 ³            ³               ³            ³
+                 ÃÄÄÄÄÄÄÄÄÄÄÄÄÙ               ÀÄÄÄÄÄÄÄÄÄÄÄÄ´
+                 ³                                         ³
+                 ³                                         ³
+                 ³                                         ³
+                 ³                                         ³
+                 ³                                         ³
+                 ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
+                 ³   Container #1     ³   Container #2     ³
+                 ³      Window        ³      Window        ³
+                 ³                    ³                    ³
+                 ³              ³                    ³
+                 ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+
+
+Of course you can move these window anywhere you like. Their positions are not
+'remembered' so the next time you bring up the program they will start out as
+above.
+
+Drag/Drop all centers around PM messages and data structures. In order to
+understand it, you must understand these messages and structures and the
+sequences of events that causes the messages to be generated. That's where the
+Debug windows come in. Whenever the container's owner gets a Drag/Drop message,
+it calls program functions that dump the name of the message and the contents
+of the passed structures to the Debug window.
+
+Once you get the hang of Drag and Drop, it will be handy to experiment with
+what happens when you start changing the values you set into the Drag/Drop data
+structures before the drag starts. To do this, a Settings Notebook is provided.
+
+You can bring up the Settings notebook at any time by using the context-menu
+keystroke (the Right Mouse Button by default, unless it was changed because
+you are left-handed or something like that). This context menu gives you 4
+options, each will bring up the same Settings Notebook but opened to a different
+page. The 4 pages of the settings notebook are as follows:
+
+
+ DragInfo page - This page lets you alter all fields of the DRAGINFO strucure
+                 and its DRAGITEM structures. These structures are set up by
+                 source window in the Drag/Drop, i.e. the window that the Drag
+                 was started in. The only field that isn't set on this page is
+                 the RMF settings. Since there are a number of options for the
+                 RMF field, it has its own page.
+
+ RMF page      - This sets up a field in the DRAGITEM structure (hstrRMF). RMF
+                 stands for Rendering Mechanism/Format. Listboxes display the
+                 available options for the Mechanism and the Format. These are
+                 not mutually exclusive options so they are multiple-select
+                 listboxes. Each listbox has an entryfield below it that lets
+                 you enter your own additional strings for the mechanism or
+                 format. Your strings, if you enter any, will be placed first
+                 in the RMF string (before the ones in the listboxes).
+
+                 As you enter these strings or select listbox items, the hstrRMF
+                 field is updated to reflect your new selections. This is
+                 displayed in the 'generated RMF' MLE. This is a read-only MLE
+                 so you can't change it. If you are in the middle of one of the
+                 entryfields and want the RMF string to be generated (it is
+                 normally re-generated when you exit the entryfield), hit the
+                 'Generate' pushbutton. This pushbutton is only enabled when
+                 changes have been made to either of the entryfields.
+
+                 There is also a 'Use Manual RMF' checkbox and a 'Manual RMF'
+                 MLE. If you check this checkbox and enter a string in the MLE,
+                 that string will be used for hstrRMF instead of the generated
+                 one.
+
+ Reply page    - Some Drag/Drop messages require a reply (returncode) in order
+                 to determine what will happen next. This page lets you select
+                 the reply that will be used during execution of the program.
+                 You can change the replies from any Printer or Shredder drops
+                 as well as being able to decide what will be returned from the
+                 DM_DRAGOVER messages.
+
+ Misc page     - This page contains miscellaneous options. First, you can choose
+                 between letting the containers accept all kinds of drops on
+                 them and only allowing drops with a mechanism of DRM_OS2FILE.
+                 DRM_OS2FILE is the most common type of Rendering Mechanism.
+
+                 Also on this page are choices on how the Debug windows will
+                 function. In default mode, the Debug windows will display all
+                 structures from all Drag/Drop messages. Also, if you drag more
+                 than one icon, all structures related to all items will be
+                 displayed. This can be very useful if you need to know
+                 everything that's going on. It can also be quite verbose and
+                 slow down the drag. So if you don't need to know all the
+                 information, there are some choices you can make on this
+                 notebook page that affect the Debug window operation. You can
+                 choose to only display the message names rather than all the
+                 structures involved and you can choose to only display the
+                 output from the first Drag Item rather than all of them on a
+                 multi-item drag.
+
+All Settings Notebook options take affect immediately, i.e. the next time you do
+a Drag/Drop operation they will be used. You don't need to close the notebook.
+In fact it is convenient to keep it open to experiment with changing the options
+and then trying out the new changes and doing it again, etc.
+
+NOTE: The options on the settings notebook are stored in drgdrop.ini when the
+program is shut down. So your settings are persistent between program
+invokations.
+
+
+A little about Drag N' Drop
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+This program uses containers to implement Drag/Drop. The reason for this is that
+the container control is very conducive to direct manipulation and makes it easy
+on a program to implement it. The concepts illustrated in this program are
+directly transferrable to Drag/Drop in a regular PM window and any other PM
+control.
+
+The CN_ messages that are used in this program are WM_CONTROL messages sent by
+the container to its owner when it gets the normal PM messages. The reason for
+these messages is so that the container can provide its owner with more
+information than it would normally get with the regular PM messages. The mapping
+goes like this:
+
+  PM message (container gets this)       Message sent by container to owner
+  ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ       ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+  WM_BEGINDRAG ......................... CN_INITDRAG
+  DM_DRAGOVER .......................... CN_DRAGOVER
+  DM_DROP .............................. CN_DROP
+
+The ValueSet control also provides this type of interface to its owner.
+Obviously if your program just uses a normal client window you would use the
+messages on the left-hand side.
+
+THE MOST IMPORTANT THING that you need to know about Drag/Drop is that the
+information passed between the source and target is in shared memory so it has
+to be freed by both sides when they are done with it. Since you don't allocate
+the shared memory (PMDRAG.DLL does), it is more difficult to think in terms of
+freeing it. The memory that has to be freed is the DRAGINFO structure and all
+the string handles in it and its attached DRAGITEM structures, and any
+DRAGTRANSFER structures that were used if rendering takes place (this program
+does not do any rendering - my DRGRENDR and DRGTHRND samples do if you need
+some sample code for that).
+
+You use DrgFreeDraginfo() to free the DRAGINFO structure and
+DrgFreeDragtransfer() to free the DRAGTRANSFER structures. The DRAGINFO
+structure is allocated by the source when it starts the drag (using the
+DrgAllocDraginfo() API), and PM takes care of disbursing this memory to
+processes that need it when they call DrgAccessDraginfo(). The DRAGTRANSFER
+structures are allocated by the target (using the DrgAllocDragtransfer() API)
+when drop processing starts. Whenever it communicates with the source, it uses
+DrgSend/PostTransferMsg() API's that cause PM to give their process access to
+the DRAGTRANSFER structure.
+
+Here are the documented times for freeing these structures when no rendering is
+involved. Since this program doesn't do any rendering, I won't go into that
+aspect. When rendering is involved, things change a little:
+
+SOURCE
+ÄÄÄÄÄÄ
+
+If DrgDrag() returns NULLHANDLE (which it will if the user hits F1 or Esc during
+the drop so that there is no target window), it should make the following calls:
+
+    DrgDeleteDraginfoStrHandles();
+    DrgFreeDragInfo();
+
+DrgDeleteDraginfoStrHandles() deletes all the string handles in all the
+DRAGITEMs associated with the DRAGINFO structure. DrgFreeDraginfo() frees the
+DRAGINFO structure.
+
+If DrgDrag() doesn't return NULLHANDLE, that means a drop occurred and the
+return value is the target's window handle. In this case, it is the target's
+responsibility to delete the string handles but the source needs to free the
+DRAGINFO structure. Here's what it should do:
+
+  Under DM_ENDCONVERSATION, when the DM_ENDCONVERSATION for the *last* DRAGITEM
+  comes thru, the source needs to call DrgFreeDraginfo(). Keep in mind that
+  this means a global counter must be used (or store it in a window word like
+  this program does) so it can keep track of when the last one comes thru.
+
+
+TARGET
+ÄÄÄÄÄÄ
+
+The target needs to make the following calls under the CN_DROP (or DM_DROP if
+not a container owner) message:
+
+    DrgDeleteDraginfoStrHandles();
+    DrgFreeDraginfo();
+
+DRGDROP frees these structures when the documentation recommends freeing them
+(as illustrated above). Unfortunately the documentation isn't real clear on
+this and you have to search to find it. REMEMBER THAT IF YOUR APPLICATION DOES
+NOT FREE THESE STRUCTURES WHEN IT IS SUPPOSED TO THAT YOUR APP COULD SCREW UP
+OTHER APPS IF IT ALLOWS DIRECT MANIPULATION TO OCCUR WITH OTHER APPS. This is
+an important thing to note. If direct manipulation is not done properly it
+could lead to a PM resource leak because shared memory might never be freed
+that should be freed.
+
+NOTE: If rendering takes place after the drop, this scenario changes a bit. So
+as not to confuse things, I'm leaving this little bit of trivia out of this
+sample. For that info, find my DRGRENDR or DRGTHRND sample programs. DRGRENDR
+does rendering on the main thread. DRGTHRND does rendering on secondary threads.
+
+DRGDROP.EXE is built from 10 source modules:
+
+DRGDROP.C  - Main source module that starts things off.
+DEBUGWIN.C - Debug window code that creates/handles Drag/Drop output windows.
+NOTEBOOK.C - Settings Notebook code (exclusive of the dialogs).
+DLGDRAGI.C - DragInfo dialog within the Settings Notebook.
+DLGMISC.C  - Miscellaneous Options dialog within the Settings Notebook.
+DLGREPLY.C - Reply dialog within the Settings Notebook.
+DLGRMF.C   - RMF dialog within the Settings Notebook.
+DRAG.C     - All Drag/Drop code.
+MENU.C     - Handles the context menu.
+SHOW.C     - Displays Drag/Drop data structures in the debug windows.
+
+I know that this little document doesn't go nearly into enough detail about
+Drag/Drop. The problem is that there is enough information on direct
+manipulation to fill a book. For more information, look at the information in
+the Programming Guide that comes with the IBM toolkit technical library. There
+is a sample program called DRAGDROP that comes with the toolkit that is a very
+good sample.
+
+Hope this sample program helps someone.
+
+===============================================================================
+GLOBAL HISTORY
+
+07-27-93 - Completed coding.
+12-05-93 - Fix bug where the ntsType.szName was being used for hstrType instead
+           of ntsType.szString. Also made the CB_TYPE combobox a DROPDOWN vs. a
+           DROPDOWNLIST so you can enter your own type.
+
+===============================================================================
+
+Rick Fishman
+Code Blazers, Inc.
+4113 Apricot
+Irvine, CA 92720
+
+CIS ID: 72251,750
